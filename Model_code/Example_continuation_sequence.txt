@@ -1,0 +1,10 @@
+For the on-branch (initiated from Ea = -1Sv)
+
+a=load('coupled_model_v1')
+r1=run(a)
+r2=run(r1(11),ICP=1,IPS=1,SP={'BP0','HB0'},NMX=30,NPR=1,EPSS=1e-07,EPSU=1e-06,EPSL=1e-06,DS=0.2,ILP=0)
+
+For the off-branch (initiated from Ea = 1Sv)
+a=load('coupled_model_v1')
+r1=run(a)
+r2=run(r1(11),ICP=1,IPS=1,SP={'BP0','HB0'},NMX=30,NPR=1,EPSS=1e-07,EPSU=1e-08,EPSL=1e-08,DS=-0.2,ILP=0)
