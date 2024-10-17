@@ -14,7 +14,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 #%% Directory with data
-Datadir='/Users/daan/Desktop/Cimatoribus_ESD_version/Model_code/'
+Datadir='/Users/Boot0016/Documents/Stuff/Desktop/Cimatoribus_ESD_version/Data'
 
 #%% Plotting variables
 varx = 'E$_a$' # Variable on x-axis plots
@@ -78,9 +78,15 @@ for i in range(13):
 Es = np.arange(0,0.61,0.05)
 
 Es2 = np.arange(0,0.61,0.005)
-CO2_2 = np.exp(((Es2+0.142)/0.097))
- 
+CO2_2 = np.exp(((Es2+0.142)/0.092))
+
 #%% Figure 4
+new_tick_locations = np.array([0.25, 0.3,0.35,0.4,0.45,0.50])
+
+def tick_function(X):
+    V = np.exp(((X+0.142)/0.092))
+    return ["%.0f" % z for z in V]
+
 plt.figure(figsize=(8, 8))
 fig, ax1 = plt.subplots(figsize=(8, 7.25))
 
@@ -88,22 +94,31 @@ plt.plot(Es,L1,'-.',color='tab:blue',linewidth=LW,label='On branch')
 plt.plot(Es,L2,'--',color='tab:orange',linewidth=LW,label='Off branch')
 
 plt.xlim([0.21,0.54])
-plt.xlabel('E$_s$ [Sv]',fontsize=FS-3)
-plt.ylabel('E$_a$ [Sv]',color='black',fontsize=FS-3)
+plt.xlabel('E$_s$ [Sv]',fontsize=FS-2)
+plt.ylabel('E$_a$ [Sv]',color='black',fontsize=FS-2)
 
 plt.xticks([0.25,0.3,0.35,0.4,0.45,0.5],fontsize=FS-4)
 plt.yticks([-0.15,0,0.15,0.3,0.45],color='black',fontsize=FS-4)    
 plt.grid()
 plt.legend(fontsize=FS-3,handlelength=3,loc=6)
 
-ax2 = ax1.twinx()
-ax2.plot(Es2,CO2_2,linewidth=LW,color='g')
-ax2.set_ylabel('CO$_2$ [ppm]', color='g',fontsize=FS-3)
-ax2.set_ylim([0,1200])
-plt.yticks([0,280,560,840,1120],color='g',fontsize=FS-4)    
+plt.fill_between(Es, L1, 0.6, color='tab:blue', alpha = 0.2)
+plt.fill_between(Es, L2, -0.25, color='tab:orange', alpha = 0.2)
+
+plt.text(0.225,0.44,'Monostable off',fontsize = FS)
+plt.text(0.225,-0.15,'Monostable on',fontsize = FS) 
+plt.text(0.47,0.175,'MEW',fontsize = FS) 
+plt.arrow(0.52,-0.04,0.0,0.45,color='black',width = 0.003,head_length = 0.03,shape='full')
+plt.arrow(0.52,0.41,0.0,-0.44,color='black',width = 0.003,head_length = 0.03,shape='full')
+plt.ylim([-0.2,0.5])
+
+ax2 = ax1.twiny()
+ax2.set_xlabel('CO$_2$ [ppm]', color='k',fontsize=FS-2)
+ax2.set_xticks(new_tick_locations)
+ax2.set_xticklabels(tick_function(new_tick_locations),fontsize=FS-4)
 
 plt.xlim([0.21,0.54])
 
 if save_fig == 'yes':
-    plt.savefig('figure_s2.png', format='png', dpi=quality, bbox_inches = 'tight')
+    plt.savefig('figure_4.png', format='png', dpi=quality, bbox_inches = 'tight')
     
